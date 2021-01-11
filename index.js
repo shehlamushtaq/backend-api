@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, (req, res) => {
     console.log("My second Server is running at port: ", PORT);
 });
+var cors = require('cors')
+app.use(cors())
 
 app.use('/api/users', require('./routes/api/users'))
 // const users = require('./Users')
