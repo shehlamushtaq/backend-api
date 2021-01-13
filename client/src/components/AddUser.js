@@ -1,5 +1,5 @@
 import React from "react";
-import { ListGroup, Row, Col } from "react-bootstrap";
+import { ListGroup, Row, Col, Button } from "react-bootstrap";
 const AddUser = () => {
   return (
     <div>
@@ -15,19 +15,25 @@ const AddUser = () => {
               <Row>
                 <Col className="col-headers">Name</Col>
                 <Col>
-                  <input type="text" />
+                  <input type="text" name='name' />
                 </Col>
               </Row>
               <Row>
                 <Col className="col-headers">Email</Col>
                 <Col>
-                  <input type="text" />
+                  <input type="text" email='email'/>
                 </Col>
               </Row>
               <Row>
                 <Col className="col-headers">Password</Col>
                 <Col>
-                  <input type="text" />
+                  <input type="password" />
+                </Col>
+              </Row>
+              {/* //========================================== */}
+              <Row>
+                <Col>
+                <Button variant="primary" size='sm'>Add User</Button>
                 </Col>
               </Row>
             </ListGroup.Item>
