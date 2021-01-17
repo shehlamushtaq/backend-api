@@ -10,7 +10,7 @@ const SingleUser = () => {
   useEffect(() => {
     fetch("http://localhost:5000/api/users/" + id)
       .then((res) => res.json())
-      .then((data) => setUser(data))
+      .then((data) => setUser(data.data))
       .catch((err) => console.log(err));
   }, [id]);
 
@@ -28,7 +28,7 @@ const SingleUser = () => {
             <ListGroup.Item variant="light">
               <Row>
                 <Col className="col-headers">ID</Col>
-                <Col>{user?.id}</Col>
+                <Col>{user?._id}</Col>
               </Row>
               <Row>
                 <Col className="col-headers">Name</Col>
@@ -40,7 +40,7 @@ const SingleUser = () => {
               </Row>
               <Row>
                 <Col className="col-headers">Password</Col>
-                <Col>{user?.password}</Col>
+                <Col>{user?.pwd}</Col>
               </Row>
             </ListGroup.Item>
           </ListGroup>

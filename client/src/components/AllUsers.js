@@ -2,20 +2,20 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ListGroup, Row, Col, Button } from "react-bootstrap";
+import axios from "axios";
 
 const AllUsers = () => {
-  const [user, setUser] = useState([]);
+  const [state, setstate] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/users")
-      .then((res) => res.json())
+    axios
+      .get("http://localhost:5000/api/users/")
       .then((res) => {
-        console.log(res);
-
-        setUser(res);
-      });
+        console.log(res.data.data);
+        setstate(res.data.data);
+      })
+      .catch((e) => console.log(e));
   }, []);
-
   return (
     <div>
       <h3>all users</h3>
@@ -26,23 +26,33 @@ const AllUsers = () => {
           <ListGroup>
             <ListGroup.Item variant="primary">
               <Row className="col-headers">
-                <Col>Name</Col>
-                <Col>Email</Col>
-                <Col>Actions</Col>
+                <Col lg={5} md={5} sm={5} xs={5}>
+                  Name
+                </Col>
+                <Col lg={5} md={5} sm={5} xs={5}>
+                  Email
+                </Col>
+                <Col lg={2} md={5} sm={5} xs={5}>
+                  Actions
+                </Col>
               </Row>
             </ListGroup.Item>
 
-            {user.map((item, ind) => (
+            {state.map((item, ind) => (
               <ListGroup.Item key={ind} variant="light">
                 <Row>
-                  <Col>{item.name}</Col>
-                  <Col>{item.email}</Col>
-                  <Col>
+                  <Col lg={5} md={5} sm={5} xs={5}>
+                    {item.name}
+                  </Col>
+                  <Col lg={5} md={5} sm={5} xs={5}>
+                    {item.email}
+                  </Col>
+                  <Col lg={2} md={5} sm={5} xs={5}>
                     <Button
                       variant="info"
                       size="sm"
                       as={Link}
-                      to={"/SingleUser/" + item.id}
+                      to={"/SingleUser/" + item._id}
                     >
                       View
                     </Button>
