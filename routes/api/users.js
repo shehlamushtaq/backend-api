@@ -60,4 +60,23 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//===============================================Edit user
+
+router.post("/edit", async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.body._id, req.body);
+    res.json({
+      status: 201,
+      success: true,
+      dbid: user._id,
+    });
+  } catch (err) {
+    res.json({
+      status: 400,
+      success: false,
+      error: err.message,
+    });
+  }
+});
+
 module.exports = router;

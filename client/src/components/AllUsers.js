@@ -1,11 +1,15 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ListGroup, Row, Col, Button } from "react-bootstrap";
+import { ListGroup, Row, Col, Button, Modal } from "react-bootstrap";
 import axios from "axios";
+import EditUser from "./EditUser";
 
 const AllUsers = () => {
   const [state, setstate] = useState([]);
+  const [showEdit, setShowEdit] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({});
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     axios
@@ -15,7 +19,29 @@ const AllUsers = () => {
         setstate(res.data.data);
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [reload]);
+
+  const DoEdit = (obj) => {
+    setSelectedUser(obj);
+    setShowEdit(true);
+  };
+
+  const EditUserData = (obj) => {
+    const newObj = {
+      ...selectedUser,
+      ...obj,
+    };
+    axios
+      .post("http://localhost:5000/api/users/edit", newObj)
+      .then((res) => {
+        console.log(res);
+        setShowEdit(false);
+        setSelectedUser({});
+        setReload(!reload);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div>
       <h3>all users</h3>
@@ -26,13 +52,13 @@ const AllUsers = () => {
           <ListGroup>
             <ListGroup.Item variant="primary">
               <Row className="col-headers">
-                <Col lg={5} md={5} sm={5} xs={5}>
+                <Col lg={4} md={4} sm={4} xs={4}>
                   Name
                 </Col>
-                <Col lg={5} md={5} sm={5} xs={5}>
+                <Col lg={4} md={4} sm={4} xs={4}>
                   Email
                 </Col>
-                <Col lg={2} md={5} sm={5} xs={5}>
+                <Col lg={4} md={4} sm={4} xs={4}>
                   Actions
                 </Col>
               </Row>
@@ -41,13 +67,13 @@ const AllUsers = () => {
             {state.map((item, ind) => (
               <ListGroup.Item key={ind} variant="light">
                 <Row>
-                  <Col lg={5} md={5} sm={5} xs={5}>
+                  <Col lg={4} md={4} sm={4} xs={4}>
                     {item.name}
                   </Col>
-                  <Col lg={5} md={5} sm={5} xs={5}>
+                  <Col lg={4} md={4} sm={4} xs={4}>
                     {item.email}
                   </Col>
-                  <Col lg={2} md={5} sm={5} xs={5}>
+                  <Col lg={4} md={4} sm={4} xs={4}>
                     <Button
                       variant="info"
                       size="sm"
@@ -55,6 +81,16 @@ const AllUsers = () => {
                       to={"/SingleUser/" + item._id}
                     >
                       View
+                    </Button>{" "}
+                    <Button
+                      variant="success"
+                      size="sm"
+                      onClick={() => DoEdit(item)}
+                    >
+                      Edit
+                    </Button>{" "}
+                    <Button variant="danger" size="sm">
+                      Delete
                     </Button>
                   </Col>
                 </Row>
@@ -64,81 +100,24 @@ const AllUsers = () => {
         </Col>
         <Col lg={3} md={2} sm={1} xs={1}></Col>
       </Row>
+
+      <Modal show={showEdit} onHide={() => setShowEdit(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <EditUser userObj={selectedUser} EditUserData={EditUserData} />
+        </Modal.Body>
+
+        {/* <Modal.Footer>
+          <Button variant="primary" onClick={() => {}}>
+            Save Changes
+          </Button>
+        </Modal.Footer> */}
+      </Modal>
     </div>
   );
 };
 
 export default AllUsers;
-////===============================================================================
-// import { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import { ListGroup, Row, Col, Button } from "react-bootstrap";
-// import axios from "axios";
-
-// function Users() {
-//   const [state, setstate] = useState([]);
-//   //let u=2;
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:4000/api/users/")
-//       .then((res) => {
-//         console.log(res.data.data);
-//         setstate(res.data.data);
-//       })
-//       .catch((e) => console.log(e));
-//   }, []);
-//   return (
-//     // <div className="App">
-//     //   {
-//     //     state.map((item)=>(
-//     //       <div key={item.id}>{item.name}</div>
-//     //     ))
-//     //   }
-//     // </div>
-//     <Row className="mt-5">
-//       <Col lg={3} md={2} sm={1} xs={1}></Col>
-//       <Col lg={6} md={8} sm={10} xs={10}>
-//         <ListGroup>
-//           <ListGroup.Item variant="primary">
-//             <Row className="col-headers">
-//               <Col lg={5} md={5} sm={5} xs={5}>
-//                 Name
-//               </Col>
-//               <Col lg={5} md={5} sm={5} xs={5}>
-//                 Email
-//               </Col>
-//               <Col lg={2} md={2} sm={2} xs={2}>
-//                 Actions
-//               </Col>
-//             </Row>
-//           </ListGroup.Item>
-//           {state.map((item, ind) => (
-//             <ListGroup.Item key={ind} variant="light">
-//               <Row>
-//                 <Col lg={5} md={5} sm={5} xs={5}>
-//                   {item.name}
-//                 </Col>
-//                 <Col lg={5} md={5} sm={5} xs={5}>
-//                   {item.email}
-//                 </Col>
-//                 <Col lg={2} md={2} sm={2} xs={2}>
-//                   <Button
-//                     variant="info"
-//                     size="sm"
-//                     as={Link}
-//                     to={"/single-user/" + item._id}
-//                   >
-//                     View
-//                   </Button>
-//                 </Col>
-//               </Row>
-//             </ListGroup.Item>
-//           ))}
-//         </ListGroup>
-//       </Col>
-//       <Col lg={3} md={2} sm={1} xs={1}></Col>
-//     </Row>
-//   );
-// }
-
-// export default Users;
