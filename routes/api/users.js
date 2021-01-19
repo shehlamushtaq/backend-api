@@ -78,5 +78,23 @@ router.post("/edit", async (req, res) => {
     });
   }
 });
+//====================================================Delete user
+
+router.delete("/:id", async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({
+      status: 200,
+      success: true,
+      msg:'post is deleted successfully',
+    });
+  } catch (err) {
+    res.json({
+      status: 400,
+      success: false,
+      error: err.message,
+    });
+  }
+});
 
 module.exports = router;

@@ -4,13 +4,34 @@ import { Link } from "react-router-dom";
 import { ListGroup, Row, Col, Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import EditUser from "./EditUser";
+import { useHistory } from "react-router-dom";
+
 
 const AllUsers = () => {
+  const history = useHistory();
+
   const [state, setstate] = useState([]);
   const [showEdit, setShowEdit] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   const [reload, setReload] = useState(false);
-
+  
+  //===============================================================Delete User
+  const [msg, setMsg] = useState('')
+  const handleDelete =(id)=>{
+    console.log(id);
+    axios.delete("http://localhost:5000/api/users/"+ id)
+    .then((res)=>{
+      console.log(res.data);
+      setMsg(`${id} is deleted`)
+    })
+    // .then((res) => {
+    //   history.push("/");
+    // })
+    .then((res)=>{window.location = '/'})
+    .catch((e)=> console.log(e))
+    
+  }
+//================================================================show all users
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/users/")
@@ -41,6 +62,7 @@ const AllUsers = () => {
       })
       .catch((err) => console.log(err));
   };
+
 
   return (
     <div>
@@ -89,7 +111,7 @@ const AllUsers = () => {
                     >
                       Edit
                     </Button>{" "}
-                    <Button variant="danger" size="sm">
+                    <Button variant="danger" size="sm" onClick={() => handleDelete(item._id)}>
                       Delete
                     </Button>
                   </Col>
