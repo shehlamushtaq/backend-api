@@ -78,6 +78,7 @@ router.post("/edit", async (req, res) => {
     });
   }
 });
+
 //====================================================Delete user
 
 router.delete("/:id", async (req, res) => {
@@ -86,7 +87,7 @@ router.delete("/:id", async (req, res) => {
     res.json({
       status: 200,
       success: true,
-      msg:'post is deleted successfully',
+      msg: "user is deleted successfully",
     });
   } catch (err) {
     res.json({

@@ -6,6 +6,7 @@ import AddUser from "./components/AddUser";
 import AllUsers from "./components/AllUsers";
 import SingleUser from "./components/SingleUser";
 import Header from "./components/Header";
+import Posts from "./components/Posts";
 
 function App() {
   return (
@@ -21,9 +22,15 @@ function App() {
             <SingleUser />
           </Route>
           {/* ------------------------------------- */}
+
           <Route path="/AddUser" exact>
             <AddUser />
           </Route>
+          {/* ------------------------------------------- */}
+          <Route path="/posts">
+            <Posts />
+          </Route>
+          {/* ----------------------------------------------- */}
         </Switch>
       </Router>
     </div>

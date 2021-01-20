@@ -6,7 +6,6 @@ import axios from "axios";
 import EditUser from "./EditUser";
 import { useHistory } from "react-router-dom";
 
-
 const AllUsers = () => {
   const history = useHistory();
 
@@ -14,24 +13,22 @@ const AllUsers = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   const [reload, setReload] = useState(false);
-  
+
   //===============================================================Delete User
-  const [msg, setMsg] = useState('')
-  const handleDelete =(id)=>{
+  const [msg, setMsg] = useState("");
+  const handleDelete = (id) => {
     console.log(id);
-    axios.delete("http://localhost:5000/api/users/"+ id)
-    .then((res)=>{
-      console.log(res.data);
-      setMsg(`${id} is deleted`)
-    })
-    // .then((res) => {
-    //   history.push("/");
-    // })
-    .then((res)=>{window.location = '/'})
-    .catch((e)=> console.log(e))
-    
-  }
-//================================================================show all users
+    axios
+      .delete("http://localhost:5000/api/users/" + id)
+      .then((res) => {
+        console.log(res.data);
+        setMsg(`${id} is deleted`);
+        setReload(!reload);
+      })
+
+      .catch((e) => console.log(e));
+  };
+  //================================================================show all users
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/users/")
@@ -41,7 +38,7 @@ const AllUsers = () => {
       })
       .catch((e) => console.log(e));
   }, [reload]);
-
+  //====================================================================edit user
   const DoEdit = (obj) => {
     setSelectedUser(obj);
     setShowEdit(true);
@@ -63,11 +60,13 @@ const AllUsers = () => {
       .catch((err) => console.log(err));
   };
 
-
   return (
     <div>
       <h3>all users</h3>
 
+      <Row>
+        <Col className="text-center"> {msg}</Col>
+      </Row>
       <Row>
         <Col lg={3} md={2} sm={1} xs={1}></Col>
         <Col lg={6} md={8} sm={10} xs={10}>
@@ -111,7 +110,11 @@ const AllUsers = () => {
                     >
                       Edit
                     </Button>{" "}
-                    <Button variant="danger" size="sm" onClick={() => handleDelete(item._id)}>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDelete(item._id)}
+                    >
                       Delete
                     </Button>
                   </Col>
@@ -122,7 +125,7 @@ const AllUsers = () => {
         </Col>
         <Col lg={3} md={2} sm={1} xs={1}></Col>
       </Row>
-
+      {/* ===================================================================================modal for editing */}
       <Modal show={showEdit} onHide={() => setShowEdit(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
