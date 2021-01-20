@@ -42,6 +42,10 @@ const SingleUser = () => {
                 <Col className="col-headers">Password</Col>
                 <Col>{user?.pwd}</Col>
               </Row>
+              <Row>
+              <Col className="col-headers">Image</Col>
+              <Col><img width={100} src={user?.img}/></Col>
+            </Row>
             </ListGroup.Item>
           </ListGroup>
         </Col>

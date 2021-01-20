@@ -8,7 +8,7 @@ const userRoute = require("./routes/api/users");
 const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 const PORT = process.env.PORT || 5000;
 
 ///connect to db

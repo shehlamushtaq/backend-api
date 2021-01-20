@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import { ListGroup, Row, Col, Button } from "react-bootstrap";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import FileBase64 from 'react-file-base64';
 
 const AddUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
+  const [img, setimg] = useState('')
 
   const history = useHistory();
+
   const handleSubmit = () => {
-    let user = { name, email, pwd };
+    let user = { name, email, pwd, img };
 
     axios
       .post("http://localhost:5000/api/users/", user)
@@ -61,6 +64,15 @@ const AddUser = () => {
                   />
                 </Col>
               </Row>
+              {/* //=================================================== */}
+              <Row>
+                  <Col className="col-headers">Desc</Col>
+                  <Col>
+                    <FileBase64
+                      multiple={false}
+                      onDone={({base64})=>setimg(base64)}
+                    />                </Col>
+                </Row>
               {/* //========================================== */}
               <Row>
                 <Col>
