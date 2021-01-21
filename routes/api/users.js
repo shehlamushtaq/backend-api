@@ -25,14 +25,30 @@ router.get("/", async (req, res) => {
 });
 //===============================================create new user
 
-router.post("/", async (req, res) => {
+router.post("/", (req, res) => {
   try {
-    const user = await User.create(req.body);
-    res.json({
-      status: 201,
-      success: true,
-      dbid: user._id,
-    });
+    User.findOne({email:req.body.email})
+    .then(user=>{
+      if(user){
+        res.json({
+          success: false,
+          status:404,
+          msg:"user Already exits"
+        })
+      }else{
+         User.create(req.body).then(
+           user=>{
+                     res.json({
+          status: 201,
+          success: true,
+          dbid: user._id,
+        });
+
+           }
+         )
+      }
+    })
+
   } catch (err) {
     res.json({
       status: 400,

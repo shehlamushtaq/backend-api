@@ -11,13 +11,27 @@ const Posts = () => {
   const [showNewPostWind, setshowNewPostWind] = useState(false);
   const [editPost, setEditPost] = useState({});
   const [showEdit, setShowEdit] = useState(false);
+<<<<<<< HEAD
   const [showView, setShowView] = useState(false);
 
+=======
+   //=================================================Get all Post Function
+   const GetAllPostData = () => {
+    axios
+      .get("http://localhost:5000/api/posts")
+      .then((res) => {
+        console.log(" All Posts", res);
+        setPosts(res.data.data);
+      })
+      .catch((err) => console.log(err, "error"));
+  };
+//===================================================Get All Posts
+>>>>>>> 990253bfb23e2162553396a9d89ca537585ed900
   useEffect(() => {
     GetAllPostData();
   }, []);
 
-  //============================================Add Post Function
+  //=================================================Add Post Function
   const AddPostData = (obj) => {
     axios
       .post("http://localhost:5000/api/posts", obj)
@@ -49,32 +63,29 @@ const Posts = () => {
         .catch((err) => console.log(err, "error"));
     }
   };
-  //=================================================Get all Post Function
-  const GetAllPostData = () => {
-    axios
-      .get("http://localhost:5000/api/posts")
-      .then((res) => {
-        console.log(" All Posts", res);
-        setPosts(res.data.data);
-      })
-      .catch((err) => console.log(err, "error"));
-  };
+ 
+  //=======================================================
 
   const InitEditProcess = (obj) => {
     setEditPost(obj);
     setShowEdit(true);
   };
+<<<<<<< HEAD
 
   const InitViewProcess = (obj) => {
     setEditPost(obj);
     setShowView(true);
   };
 
+=======
+//==============================================================================
+>>>>>>> 990253bfb23e2162553396a9d89ca537585ed900
   return (
     <div>
       <div className={"text-center my-2 " + (showNewPostWind ? "d-none" : "")}>
         <Button onClick={() => setshowNewPostWind(true)}>Add New Post</Button>
       </div>
+
       <AllPosts
         posts={posts}
         showNewPostWind={showNewPostWind}
