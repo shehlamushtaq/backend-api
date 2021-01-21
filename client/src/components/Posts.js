@@ -1,78 +1,101 @@
-// import React from "react";
-// import { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import { ListGroup, Row, Col, Button, Modal } from "react-bootstrap";
-// import axios from "axios";
-// import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Button, Modal } from "react-bootstrap";
+import AddPost from "./post/AddPost";
+import AllPosts from "./post/AllPosts";
+import axios from "axios";
+import EditPost from "./post/EditPost";
 
-// const Posts = () => {
-//   const history = useHistory();
-//   return (
-//     <div>
-//       <h1>Posts page</h1>
-//       <Row>
-//         <Col className="text-center"> {msg}</Col>
-//       </Row>
-//       <Row>
-//         <Col lg={3} md={2} sm={1} xs={1}></Col>
-//         <Col lg={6} md={8} sm={10} xs={10}>
-//           <ListGroup>
-//             <ListGroup.Item variant="primary">
-//               <Row className="col-headers">
-//                 <Col lg={4} md={4} sm={4} xs={4}>
-//                   Name
-//                 </Col>
-//                 <Col lg={4} md={4} sm={4} xs={4}>
-//                   Post Title
-//                 </Col>
-//                 <Col lg={4} md={4} sm={4} xs={4}>
-//                   Actions
-//                 </Col>
-//               </Row>
-//             </ListGroup.Item>
+const Posts = () => {
+  const [posts, setPosts] = useState([]);
+  const [showNewPostWind, setshowNewPostWind] = useState(false);
+  const [editPost, setEditPost] = useState({});
+  const [showEdit, setShowEdit] = useState(false);
 
-//             {state.map((item, ind) => (
-//               <ListGroup.Item key={ind} variant="light">
-//                 <Row>
-//                   <Col lg={4} md={4} sm={4} xs={4}>
-//                     {item.name}
-//                   </Col>
-//                   <Col lg={4} md={4} sm={4} xs={4}>
-//                     {item.email}
-//                   </Col>
-//                   <Col lg={4} md={4} sm={4} xs={4}>
-//                     <Button
-//                       variant="info"
-//                       size="sm"
-//                       as={Link}
-//                       to={"/SingleUser/" + item._id}
-//                     >
-//                       View
-//                     </Button>{" "}
-//                     <Button
-//                       variant="success"
-//                       size="sm"
-//                       onClick={() => DoEdit(item)}
-//                     >
-//                       Edit
-//                     </Button>{" "}
-//                     <Button
-//                       variant="danger"
-//                       size="sm"
-//                       onClick={() => handleDelete(item._id)}
-//                     >
-//                       Delete
-//                     </Button>
-//                   </Col>
-//                 </Row>
-//               </ListGroup.Item>
-//             ))}
-//           </ListGroup>
-//         </Col>
-//         <Col lg={3} md={2} sm={1} xs={1}></Col>
-//       </Row>
-//     </div>
-//   );
-// };
+  useEffect(() => {
+    GetAllPostData();
+  }, []);
 
-// export default Posts;
+  //============================================Add Post Function
+  const AddPostData = (obj) => {
+    axios
+      .post("http://localhost:5000/api/posts", obj)
+      .then((res) => {
+        console.log("post added", res);
+        GetAllPostData();
+      })
+      .catch((err) => console.log(err, "error"));
+  };
+  //=================================================Edit Post Function
+  const EditPostData = (obj) => {
+    axios
+      .put("http://localhost:5000/api/posts/" + obj._id, obj)
+      .then((res) => {
+        console.log("post eddited", res);
+        GetAllPostData();
+      })
+      .catch((err) => console.log(err, "error"));
+  };
+  //=================================================Delete Post Function
+  const DeletePostData = (id) => {
+    axios
+      .delete("http://localhost:5000/api/posts/" + id)
+      .then((res) => {
+        console.log("post deleted", res);
+        GetAllPostData();
+      })
+      .catch((err) => console.log(err, "error"));
+  };
+  //=================================================Get all Post Function
+  const GetAllPostData = () => {
+    axios
+      .get("http://localhost:5000/api/posts")
+      .then((res) => {
+        console.log(" All Posts", res);
+        setPosts(res.data.data);
+      })
+      .catch((err) => console.log(err, "error"));
+  };
+
+  const InitEditProcess = (obj) => {
+    setEditPost(obj);
+    setShowEdit(true);
+  };
+
+  return (
+    <div>
+      <div className={"text-center my-2 " + (showNewPostWind ? "d-none" : "")}>
+        <Button onClick={() => setshowNewPostWind(true)}>Add New Post</Button>
+      </div>
+      <AllPosts
+        posts={posts}
+        showNewPostWind={showNewPostWind}
+        InitEditProcess={InitEditProcess}
+      />
+      <AddPost
+        showNewPostWind={showNewPostWind}
+        setshowNewPostWind={setshowNewPostWind}
+        AddPostData={AddPostData}
+      />
+
+      <Modal show={showEdit} onHide={() => setShowEdit(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Post Information</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <EditPost editPost={editPost} />
+        </Modal.Body>
+
+        {/* <Modal.Footer>
+          <Button variant="primary" onClick={() => {}}>
+            Save Changes
+          </Button>
+        </Modal.Footer> */}
+      </Modal>
+
+      {/* <EditPost editPost={editPost} /> */}
+    </div>
+  );
+};
+
+export default Posts;

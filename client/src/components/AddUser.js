@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { ListGroup, Row, Col, Button } from "react-bootstrap";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import FileBase64 from 'react-file-base64';
+// import FileBase64 from 'react-file-base64';
 
 const AddUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");
-  const [img, setimg] = useState('')
+  const [img, setimg] = useState("");
 
   const history = useHistory();
 
@@ -65,14 +65,14 @@ const AddUser = () => {
                 </Col>
               </Row>
               {/* //=================================================== */}
-              <Row>
+              {/* <Row>
                   <Col className="col-headers">Desc</Col>
                   <Col>
                     <FileBase64
                       multiple={false}
                       onDone={({base64})=>setimg(base64)}
                     />                </Col>
-                </Row>
+                </Row> */}
               {/* //========================================== */}
               <Row>
                 <Col>

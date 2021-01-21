@@ -6,6 +6,7 @@ const EditUser = ({ userObj, EditUserData }) => {
   const [email, setEmail] = useState(userObj.email);
   const [pwd, setPwd] = useState(userObj.pwd);
 
+  console.log("Name:", name);
   const handleSubmit = () => {
     let user = { name, email, pwd };
     EditUserData(user);
