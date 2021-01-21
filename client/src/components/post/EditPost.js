@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { Row, Col, ListGroup, Button } from "react-bootstrap";
 
-const EditPost = ({ editPost }) => {
+const EditPost = ({ editPost, EditPostData, setShowEdit }) => {
   console.log(editPost);
   const [title, setTitle] = useState(editPost?.title);
   const [descrip, setDesccrip] = useState(editPost?.description);
   console.log(title);
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    const newobj = {
+      ...editPost,
+      title,
+      description: descrip,
+    };
+    EditPostData(newobj);
+    setShowEdit(false);
+  };
   return (
     <div>
       {/* <h1> Edit Post</h1> */}

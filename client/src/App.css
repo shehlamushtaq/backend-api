@@ -14,3 +14,16 @@ textarea {
   margin-bottom: 2px;
   width: 100%;
 }
+
+.bg-grey {
+  background-color: #eee;
+}
+
+.big-modal {
+  width: 80%;
+  max-width: auto;
+}
+
+.medium-modal {
+  width: 65%;
+}

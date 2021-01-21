@@ -4,12 +4,14 @@ import AddPost from "./post/AddPost";
 import AllPosts from "./post/AllPosts";
 import axios from "axios";
 import EditPost from "./post/EditPost";
+import ViewPost from "./post/ViewPost";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [showNewPostWind, setshowNewPostWind] = useState(false);
   const [editPost, setEditPost] = useState({});
   const [showEdit, setShowEdit] = useState(false);
+  const [showView, setShowView] = useState(false);
 
   useEffect(() => {
     GetAllPostData();
@@ -37,13 +39,15 @@ const Posts = () => {
   };
   //=================================================Delete Post Function
   const DeletePostData = (id) => {
-    axios
-      .delete("http://localhost:5000/api/posts/" + id)
-      .then((res) => {
-        console.log("post deleted", res);
-        GetAllPostData();
-      })
-      .catch((err) => console.log(err, "error"));
+    if (window.confirm("Are you sure to delete")) {
+      axios
+        .delete("http://localhost:5000/api/posts/" + id)
+        .then((res) => {
+          console.log("post deleted", res);
+          GetAllPostData();
+        })
+        .catch((err) => console.log(err, "error"));
+    }
   };
   //=================================================Get all Post Function
   const GetAllPostData = () => {
@@ -61,6 +65,11 @@ const Posts = () => {
     setShowEdit(true);
   };
 
+  const InitViewProcess = (obj) => {
+    setEditPost(obj);
+    setShowView(true);
+  };
+
   return (
     <div>
       <div className={"text-center my-2 " + (showNewPostWind ? "d-none" : "")}>
@@ -70,6 +79,8 @@ const Posts = () => {
         posts={posts}
         showNewPostWind={showNewPostWind}
         InitEditProcess={InitEditProcess}
+        InitViewProcess={InitViewProcess}
+        DeletePostData={DeletePostData}
       />
       <AddPost
         showNewPostWind={showNewPostWind}
@@ -77,13 +88,23 @@ const Posts = () => {
         AddPostData={AddPostData}
       />
 
-      <Modal show={showEdit} onHide={() => setShowEdit(false)}>
-        <Modal.Header closeButton>
+      {/* ================ Modal Window For Edit Post (Start) ========== */}
+
+      <Modal
+        show={showEdit}
+        onHide={() => setShowEdit(false)}
+        className="big-modal"
+      >
+        <Modal.Header closeButton className="bg-grey">
           <Modal.Title>Edit Post Information</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
-          <EditPost editPost={editPost} />
+          <EditPost
+            editPost={editPost}
+            EditPostData={EditPostData}
+            setShowEdit={setShowEdit}
+          />
         </Modal.Body>
 
         {/* <Modal.Footer>
@@ -92,6 +113,24 @@ const Posts = () => {
           </Button>
         </Modal.Footer> */}
       </Modal>
+      {/* ================ Modal Window For Edit Post (End) ==========  */}
+      {/* ================ Modal Window For View Post (Start) ========== */}
+      <Modal show={showView} onHide={() => setShowView(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>View Post Information</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <ViewPost editPost={editPost} />
+        </Modal.Body>
+
+        {/* <Modal.Footer>
+          <Button variant="primary" onClick={() => {}}>
+            Save Changes
+          </Button>
+        </Modal.Footer> */}
+      </Modal>
+      {/* =============== Modal Window For View Post (End) ========== */}
 
       {/* <EditPost editPost={editPost} /> */}
     </div>
