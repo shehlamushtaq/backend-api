@@ -135,11 +135,11 @@ const AllUsers = () => {
           <EditUser userObj={selectedUser} EditUserData={EditUserData} />
         </Modal.Body>
 
-        {/* <Modal.Footer>
+        <Modal.Footer>
           <Button variant="primary" onClick={() => {}}>
             Save Changes
           </Button>
-        </Modal.Footer> */}
+        </Modal.Footer>
       </Modal>
     </div>
   );
