@@ -5,6 +5,7 @@ import { ListGroup, Row, Col, Button, Modal } from "react-bootstrap";
 import axios from "axios";
 import EditUser from "./EditUser";
 import { useHistory } from "react-router-dom";
+// import DelModal from "./DelModal";
 
 const AllUsers = () => {
   const history = useHistory();
@@ -14,8 +15,13 @@ const AllUsers = () => {
   const [selectedUser, setSelectedUser] = useState({});
   const [reload, setReload] = useState(false);
 
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   //===============================================================Delete User
   const [msg, setMsg] = useState("");
+
   const handleDelete = (id) => {
     console.log(id);
     axios
@@ -24,6 +30,7 @@ const AllUsers = () => {
         console.log(res.data);
         setMsg(`${id} is deleted`);
         setReload(!reload);
+       
       })
 
       .catch((e) => console.log(e));
@@ -37,6 +44,7 @@ const AllUsers = () => {
         setstate(res.data.data);
       })
       .catch((e) => console.log(e));
+      
   }, [reload]);
   //====================================================================edit user
   const DoEdit = (obj) => {
@@ -143,6 +151,30 @@ const AllUsers = () => {
       </Modal>
     </div>
   );
+}; 
+{/* //====================================================model of delete */}
+{/* <Modal show={show} onHide={() => setShow(false)}>
+<Modal.Header closeButton>
+  <Modal.Title>Confirmation of deletion</Modal.Title>
+</Modal.Header>
+
+<Modal.Body>
+  Are you sure you want to delete
+</Modal.Body>
+
+<Modal.Footer>
+  <Button variant="primary" onClick={() => {handleDelete}}>
+    yes
+  </Button>
+  <Button variant="primary">cancel</Button>
+</Modal.Footer>
+</Modal>
+</div>
+);
 };
+//====================================================model of delete */}
+
+
+
 
 export default AllUsers;

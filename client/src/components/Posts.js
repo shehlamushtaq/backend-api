@@ -11,10 +11,8 @@ const Posts = () => {
   const [showNewPostWind, setshowNewPostWind] = useState(false);
   const [editPost, setEditPost] = useState({});
   const [showEdit, setShowEdit] = useState(false);
-<<<<<<< HEAD
   const [showView, setShowView] = useState(false);
 
-=======
    //=================================================Get all Post Function
    const GetAllPostData = () => {
     axios
@@ -26,7 +24,6 @@ const Posts = () => {
       .catch((err) => console.log(err, "error"));
   };
 //===================================================Get All Posts
->>>>>>> 990253bfb23e2162553396a9d89ca537585ed900
   useEffect(() => {
     GetAllPostData();
   }, []);
@@ -70,16 +67,13 @@ const Posts = () => {
     setEditPost(obj);
     setShowEdit(true);
   };
-<<<<<<< HEAD
 
   const InitViewProcess = (obj) => {
     setEditPost(obj);
     setShowView(true);
   };
 
-=======
 //==============================================================================
->>>>>>> 990253bfb23e2162553396a9d89ca537585ed900
   return (
     <div>
       <div className={"text-center my-2 " + (showNewPostWind ? "d-none" : "")}>
