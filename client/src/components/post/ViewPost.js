@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
+import { Row, Col, ListGroup, Button } from "react-bootstrap";
 
-const ViewPost = () => {
+const ViewPost = ({ editPost }) => {
   return (
     <div>
-      <h1>ViewPost </h1>
+      <Row>
+        <Col>
+          <Row>
+            <Col className="col-headers">Title</Col>
+            <Col>{editPost?.title}</Col>
+          </Row>
+          <Row>
+            <Col className="col-headers">Description</Col>
+            <Col>{editPost?.description}</Col>
+          </Row>
+        </Col>
+      </Row>
     </div>
   );
 };

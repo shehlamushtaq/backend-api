@@ -1,7 +1,13 @@
 import React from "react";
 import { Row, Col, ListGroup, Button } from "react-bootstrap";
 
-const AllPosts = ({ posts, showNewPostWind, InitEditProcess }) => {
+const AllPosts = ({
+  posts,
+  showNewPostWind,
+  InitEditProcess,
+  InitViewProcess,
+  DeletePostData,
+}) => {
   return (
     <div className={showNewPostWind ? "d-none" : ""}>
       <Row>
@@ -32,8 +38,7 @@ const AllPosts = ({ posts, showNewPostWind, InitEditProcess }) => {
                     <Button
                       variant="info"
                       size="sm"
-                      // as={Link}
-                      // to={"/SingleUser/" + item._id}
+                      onClick={() => InitViewProcess(item)}
                     >
                       View
                     </Button>{" "}
@@ -47,7 +52,7 @@ const AllPosts = ({ posts, showNewPostWind, InitEditProcess }) => {
                     <Button
                       variant="danger"
                       size="sm"
-                      // onClick={() => handleDelete(item._id)}
+                      onClick={() => DeletePostData(item._id)}
                     >
                       Delete
                     </Button>
