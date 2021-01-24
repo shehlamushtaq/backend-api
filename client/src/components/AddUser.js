@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { ListGroup, Row, Col, Button } from "react-bootstrap";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -10,6 +10,7 @@ const AddUser = () => {
   const [pwd, setPwd] = useState("");
   const [img, setimg] = useState("");
 
+  const msgRef = useRef();
   const history = useHistory();
 
   const handleSubmit = () => {
@@ -18,7 +19,11 @@ const AddUser = () => {
     axios
       .post("http://localhost:5000/api/users/", user)
       .then((res) => {
-        history.push("/");
+        if (res.data.success) {
+          history.push("/");
+        } else {
+          msgRef.current.classList.remove("d-none");
+        }
       })
       .catch((err) => console.log(err, "error"));
   };
@@ -28,6 +33,9 @@ const AddUser = () => {
       <Row>
         <Col lg={3} md={2} sm={1} xs={1}></Col>
         <Col lg={6} md={8} sm={10} xs={10}>
+          <h5 ref={msgRef} className="d-none">
+            User Already Exists
+          </h5>
           <ListGroup>
             <ListGroup.Item variant="primary" className="col-headers">
               New User information

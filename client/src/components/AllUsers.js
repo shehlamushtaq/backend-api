@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ListGroup, Row, Col, Button, Modal } from "react-bootstrap";
 import axios from "axios";
@@ -13,21 +13,9 @@ const AllUsers = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   const [reload, setReload] = useState(false);
-
-  //===============================================================Delete User
+  const [show, setShow] = useState(false);
   const [msg, setMsg] = useState("");
-  const handleDelete = (id) => {
-    console.log(id);
-    axios
-      .delete("http://localhost:5000/api/users/" + id)
-      .then((res) => {
-        console.log(res.data);
-        setMsg(`${id} is deleted`);
-        setReload(!reload);
-      })
 
-      .catch((e) => console.log(e));
-  };
   //================================================================show all users
   useEffect(() => {
     axios
@@ -38,6 +26,30 @@ const AllUsers = () => {
       })
       .catch((e) => console.log(e));
   }, [reload]);
+
+  //const handleClose = () => setShow(false);
+
+  const inithandleDelete = (obj) => {
+    setSelectedUser(obj);
+    setShow(true);
+  };
+
+  //===============================================================Delete User
+  const handleDelete = (id) => {
+    console.log(id);
+    axios
+      .delete("http://localhost:5000/api/users/" + id)
+      .then((res) => {
+        console.log(res.data);
+        setMsg(`${id} is deleted`);
+        setReload(!reload);
+        setShow(false);
+
+        setTimeout(() => setMsg(""), 5000);
+      })
+
+      .catch((e) => console.log(e));
+  };
   //====================================================================edit user
   const DoEdit = (obj) => {
     setSelectedUser(obj);
@@ -63,9 +75,10 @@ const AllUsers = () => {
   return (
     <div>
       <h3>all users</h3>
-
       <Row>
-        <Col className="text-center"> {msg}</Col>
+        <Col className="text-center">
+          <h5>{msg}</h5>
+        </Col>
       </Row>
       <Row>
         <Col lg={3} md={2} sm={1} xs={1}></Col>
@@ -113,7 +126,7 @@ const AllUsers = () => {
                     <Button
                       variant="danger"
                       size="sm"
-                      onClick={() => handleDelete(item._id)}
+                      onClick={() => inithandleDelete(item)}
                     >
                       Delete
                     </Button>
@@ -135,9 +148,31 @@ const AllUsers = () => {
           <EditUser userObj={selectedUser} EditUserData={EditUserData} />
         </Modal.Body>
 
-        <Modal.Footer>
+        {/* <Modal.Footer>
           <Button variant="primary" onClick={() => {}}>
             Save Changes
+          </Button>
+        </Modal.Footer> */}
+        {/* //======================================================deletion confirmation modale */}
+      </Modal>
+      <Modal show={show} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmation to Delete</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <p>Are you sure you want to Delete</p>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShow(false)}>
+            cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => handleDelete(selectedUser._id)}
+          >
+            Yes
           </Button>
         </Modal.Footer>
       </Modal>
