@@ -35,16 +35,14 @@ const AllUsers = () => {
     setShow(true);
   };
 
-  const [show, setShow] = useState(false);
+  //const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   //===============================================================Delete User
-<<<<<<< HEAD
-=======
-  const [msg, setMsg] = useState("");
 
->>>>>>> 05b7af8e264ae83962f640b138cd2e49cac54534
+  //const [msg, setMsg] = useState("");
+
   const handleDelete = (id) => {
     console.log(id);
     axios
@@ -53,19 +51,15 @@ const AllUsers = () => {
         console.log(res.data);
         setMsg(`${id} is deleted`);
         setReload(!reload);
-<<<<<<< HEAD
+
         setShow(false);
 
         setTimeout(() => setMsg(""), 5000);
-=======
-       
->>>>>>> 05b7af8e264ae83962f640b138cd2e49cac54534
       })
 
       .catch((e) => console.log(e));
   };
-<<<<<<< HEAD
-=======
+
   //================================================================show all users
   useEffect(() => {
     axios
@@ -77,7 +71,7 @@ const AllUsers = () => {
       .catch((e) => console.log(e));
       
   }, [reload]);
->>>>>>> 05b7af8e264ae83962f640b138cd2e49cac54534
+
   //====================================================================edit user
   const DoEdit = (obj) => {
     setSelectedUser(obj);
