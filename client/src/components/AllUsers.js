@@ -61,6 +61,7 @@ const AllUsers = () => {
   };
 
   //================================================================show all users
+  /*
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/users/")
@@ -71,7 +72,7 @@ const AllUsers = () => {
       .catch((e) => console.log(e));
       
   }, [reload]);
-
+*/
   //====================================================================edit user
   const DoEdit = (obj) => {
     setSelectedUser(obj);
