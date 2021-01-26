@@ -61,6 +61,7 @@ const AllUsers = () => {
   };
 
   //================================================================show all users
+<<<<<<< HEAD
   // useEffect(() => {
   //   axios
   //     .get("http://localhost:5000/api/users/")
@@ -72,6 +73,20 @@ const AllUsers = () => {
       
   // }, [reload]);
 
+=======
+  /*
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/users/")
+      .then((res) => {
+        console.log(res.data.data);
+        setstate(res.data.data);
+      })
+      .catch((e) => console.log(e));
+      
+  }, [reload]);
+*/
+>>>>>>> f07f8f443251d0593d102c1ded0ebd237c5b79bb
   //====================================================================edit user
   const DoEdit = (obj) => {
     setSelectedUser(obj);
