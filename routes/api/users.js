@@ -24,39 +24,36 @@ router.get("/", async (req, res) => {
   }
 });
 //===============================================create new user
-
-router.post("/", (req, res) => {
+router.post("/add", (req, res) => {
+  let {pwd, email, name} = req.body
+  var salt = bcrypt.genSaltSync(pwd, salt);
+  var hash = bcrypt.hashSync(pwd, salt)
+  let newUser = {pwd:hash, email, name}
   try {
     User.findOne({email:req.body.email})
     .then(user=>{
-      if(user){
-        res.json({
-          success: false,
-          status:404,
-          msg:"user Already exits"
+      if(!user){
+        ///==================save
+        User.create(newUser)
+        .then(user=>{
+                res.json({
+                      status: 201,
+                      success: true,
+                      dbid: user._id
         })
-      }else{
-         User.create(req.body).then(
-           user=>{
-                     res.json({
-          status: 201,
-          success: true,
-          dbid: user._id,
-        });
-
-           }
-         )
-      }
-    })
-
-  } catch (err) {
-    res.json({
+      })
+      }///closing if
+  }) .catch (err => res.json ({
+    
       status: 400,
       success: false,
-      error: err.message,
-    });
-  }
-});
+      error: err
+    }));
+  } catch (err){
+    console.log(err);
+    res.status(400).json({success: false, error: err.message})
+}
+  });
 //===============================================view single User
 
 router.get("/:id", async (req, res) => {
@@ -113,5 +110,7 @@ router.delete("/:id", async (req, res) => {
     });
   }
 });
+//=========================================login auth
+router.post("/login")
 
 module.exports = router;
