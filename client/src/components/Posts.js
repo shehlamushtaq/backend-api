@@ -13,13 +13,9 @@ const Posts = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [showView, setShowView] = useState(false);
 
-<<<<<<< HEAD
-  //=================================================Get all Post Function
-  const GetAllPostData = () => {
-=======
+
    //=================================================Get all Post Function
    const GetAllPostData = () => {
->>>>>>> 05b7af8e264ae83962f640b138cd2e49cac54534
     axios
       .get("http://localhost:5000/api/posts")
       .then((res) => {
@@ -28,11 +24,7 @@ const Posts = () => {
       })
       .catch((err) => console.log(err, "error"));
   };
-<<<<<<< HEAD
-  //===================================================Get All Posts
-=======
 //===================================================Get All Posts
->>>>>>> 05b7af8e264ae83962f640b138cd2e49cac54534
   useEffect(() => {
     GetAllPostData();
   }, []);
@@ -82,11 +74,7 @@ const Posts = () => {
     setShowView(true);
   };
 
-<<<<<<< HEAD
-  //==============================================================================
-=======
 //==============================================================================
->>>>>>> 05b7af8e264ae83962f640b138cd2e49cac54534
   return (
     <div>
       <div className={"text-center my-2 " + (showNewPostWind ? "d-none" : "")}>
