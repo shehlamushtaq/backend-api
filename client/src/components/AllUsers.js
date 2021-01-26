@@ -35,16 +35,11 @@ const AllUsers = () => {
     setShow(true);
   };
 
-  const [show, setShow] = useState(false);
+  //const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   //===============================================================Delete User
-<<<<<<< HEAD
-=======
-  const [msg, setMsg] = useState("");
-
->>>>>>> 05b7af8e264ae83962f640b138cd2e49cac54534
   const handleDelete = (id) => {
     console.log(id);
     axios
@@ -53,31 +48,24 @@ const AllUsers = () => {
         console.log(res.data);
         setMsg(`${id} is deleted`);
         setReload(!reload);
-<<<<<<< HEAD
         setShow(false);
 
         setTimeout(() => setMsg(""), 5000);
-=======
-       
->>>>>>> 05b7af8e264ae83962f640b138cd2e49cac54534
       })
 
       .catch((e) => console.log(e));
   };
-<<<<<<< HEAD
-=======
   //================================================================show all users
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/users/")
-      .then((res) => {
-        console.log(res.data.data);
-        setstate(res.data.data);
-      })
-      .catch((e) => console.log(e));
-      
-  }, [reload]);
->>>>>>> 05b7af8e264ae83962f640b138cd2e49cac54534
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:5000/api/users/")
+  //     .then((res) => {
+  //       console.log(res.data.data);
+  //       setstate(res.data.data);
+  //     })
+  //     .catch((e) => console.log(e));
+
+  // }, [reload]);
   //====================================================================edit user
   const DoEdit = (obj) => {
     setSelectedUser(obj);
@@ -206,9 +194,12 @@ const AllUsers = () => {
       </Modal>
     </div>
   );
-}; 
-{/* //====================================================model of delete */}
-{/* <Modal show={show} onHide={() => setShow(false)}>
+};
+{
+  /* //====================================================model of delete */
+}
+{
+  /* <Modal show={show} onHide={() => setShow(false)}>
 <Modal.Header closeButton>
   <Modal.Title>Confirmation of deletion</Modal.Title>
 </Modal.Header>
@@ -227,9 +218,7 @@ const AllUsers = () => {
 </div>
 );
 };
-//====================================================model of delete */}
-
-
-
+//====================================================model of delete */
+}
 
 export default AllUsers;
