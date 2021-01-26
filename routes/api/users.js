@@ -3,6 +3,7 @@ const { findByIdAndDelete } = require("../../models/users.js");
 const router = express.Router();
 // const users = require('../../Users')
 const User = require("../../models/users.js");
+var bcrypt = require("bcryptjs");
 
 //==============================================get all users
 router.get("/", async (req, res) => {
@@ -24,37 +25,40 @@ router.get("/", async (req, res) => {
   }
 });
 //===============================================create new user
+router.post("/add", (req, res) => {
+  let { pwd, email, name } = req.body;
+  var salt = bcrypt.genSaltSync(10);
+  var hash = bcrypt.hashSync(pwd, salt);
+  let newUser = { pwd: hash, email, name };
 
-router.post("/", (req, res) => {
+  console.log(newUser);
   try {
-    User.findOne({email:req.body.email})
-    .then(user=>{
-      if(user){
+    User.findOne({ email })
+      .then((user) => {
+        if (!user) {
+          ///==================save
+          User.create(newUser).then((user) => {
+            res.json({
+              status: 201,
+              success: true,
+              dbid: user._id,
+            });
+          });
+        } else {
+          console.log("user already foumd");
+          res.json({ status: 201 });
+        }
+      })
+      .catch((err) =>
         res.json({
+          status: 400,
           success: false,
-          status:404,
-          msg:"user Already exits"
+          error: err,
         })
-      }else{
-         User.create(req.body).then(
-           user=>{
-                     res.json({
-          status: 201,
-          success: true,
-          dbid: user._id,
-        });
-
-           }
-         )
-      }
-    })
-
+      );
   } catch (err) {
-    res.json({
-      status: 400,
-      success: false,
-      error: err.message,
-    });
+    console.log(err);
+    res.status(400).json({ success: false, error: err.message });
   }
 });
 //===============================================view single User
@@ -111,6 +115,36 @@ router.delete("/:id", async (req, res) => {
       success: false,
       error: err.message,
     });
+  }
+});
+//=========================================login auth
+router.post("/login", async (req, res) => {
+  try {
+    const { email, pwd } = req.body;
+    console.log(email);
+    User.findOne({ email })
+      .then((user) => {
+        bcrypt.compare(pwd, user.pwd).then((isMatch) => {
+          if (!isMatch) {
+            console.log("Invalid Password");
+            res.json({ success: false, msg: "invalid password" });
+          } else {
+            res.json({
+              status: 200,
+              success: true,
+              data: user,
+              msg: "Login successfully",
+            });
+          }
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({ success: false, msg: "Email not found" });
+      });
+  } catch (e) {
+    console.log(e);
+    res.json({ success: false, msg: "Database connection error" });
   }
 });
 

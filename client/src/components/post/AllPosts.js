@@ -1,5 +1,6 @@
 import React from "react";
 import { Row, Col, ListGroup, Button } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const AllPosts = ({
   posts,
@@ -8,6 +9,9 @@ const AllPosts = ({
   InitViewProcess,
   DeletePostData,
 }) => {
+  const isLogin = useSelector((state) => state.isLogin);
+  const loggedInUser = useSelector((state) => state.loggedInUser);
+
   return (
     <div className={showNewPostWind ? "d-none" : ""}>
       <Row>
@@ -42,20 +46,24 @@ const AllPosts = ({
                     >
                       View
                     </Button>{" "}
-                    <Button
-                      variant="success"
-                      size="sm"
-                      onClick={() => InitEditProcess(item)}
-                    >
-                      Edit
-                    </Button>{" "}
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => DeletePostData(item._id)}
-                    >
-                      Delete
-                    </Button>
+                    {isLogin && loggedInUser._id === item.userID ? (
+                      <Button
+                        variant="success"
+                        size="sm"
+                        onClick={() => InitEditProcess(item)}
+                      >
+                        Edit
+                      </Button>
+                    ) : null}{" "}
+                    {isLogin && loggedInUser._id === item.userID ? (
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => DeletePostData(item._id)}
+                      >
+                        Delete
+                      </Button>
+                    ) : null}
                   </Col>
                 </Row>
               </ListGroup.Item>

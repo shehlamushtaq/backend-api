@@ -9,6 +9,10 @@ const postSchema = mongoose.Schema({
     type: String,
     default: " enter your details here",
   },
+  userID: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: new Date(),

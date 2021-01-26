@@ -5,6 +5,7 @@ import AllPosts from "./post/AllPosts";
 import axios from "axios";
 import EditPost from "./post/EditPost";
 import ViewPost from "./post/ViewPost";
+import { useSelector } from "react-redux";
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
@@ -12,6 +13,8 @@ const Posts = () => {
   const [editPost, setEditPost] = useState({});
   const [showEdit, setShowEdit] = useState(false);
   const [showView, setShowView] = useState(false);
+
+  const userID = useSelector((state) => state.loggedInUser._id);
 
   //=================================================Get all Post Function
   const GetAllPostData = () => {
@@ -23,15 +26,19 @@ const Posts = () => {
       })
       .catch((err) => console.log(err, "error"));
   };
-
+  //===================================================Get All Posts
   useEffect(() => {
     GetAllPostData();
   }, []);
 
   //=================================================Add Post Function
   const AddPostData = (obj) => {
+    const newObj = {
+      ...obj,
+      userID,
+    };
     axios
-      .post("http://localhost:5000/api/posts", obj)
+      .post("http://localhost:5000/api/posts", newObj)
       .then((res) => {
         console.log("post added", res);
         GetAllPostData();
@@ -73,10 +80,14 @@ const Posts = () => {
     setShowView(true);
   };
 
+  const isLogin = useSelector((state) => state.isLogin);
+
   return (
     <div>
       <div className={"text-center my-2 " + (showNewPostWind ? "d-none" : "")}>
-        <Button onClick={() => setshowNewPostWind(true)}>Add New Post</Button>
+        {isLogin ? (
+          <Button onClick={() => setshowNewPostWind(true)}>Add New Post</Button>
+        ) : null}
       </div>
 
       <AllPosts
