@@ -4,6 +4,7 @@ const router = express.Router();
 // const users = require('../../Users')
 const User = require("../../models/users.js");
 var bcrypt = require("bcryptjs");
+const session = require("express-session");
 
 //==============================================get all users
 router.get("/", async (req, res) => {
@@ -129,6 +130,13 @@ router.post("/login", async (req, res) => {
             console.log("Invalid Password");
             res.json({ success: false, msg: "invalid password" });
           } else {
+            let onLineUser = {
+              id: user._id,
+              name: user.name,
+              email: user.email,
+            };
+            req.session.user = onLineUser;
+            console.log(req.session.user);
             res.json({
               status: 200,
               success: true,
@@ -147,5 +155,33 @@ router.post("/login", async (req, res) => {
     res.json({ success: false, msg: "Database connection error" });
   }
 });
+//==============================================================log out
+router.post("/logout", (req, res) => {
+  // req.session
+  //   .destroy()
+  //   .then((sess) => {
+  //     res.clearCookie("session-id");
+  //     res.json({
+  //       status: 200,
+  //       msg: "logout success",
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     res.json({
+  //       status: 400,
+  //       msg: "logout failed",
+  //     });
+  //   });
 
+  req.session.destroy((err) => {
+    //delete session data from store, using sessionID in cookie
+    if (err) throw err;
+    res.clearCookie("session-id"); // clears cookie containing expired sessionID
+    //res.send("Logged out successfully");
+    res.json({
+      status: 200,
+      msg: "logout success",
+    });
+  });
+});
 module.exports = router;
