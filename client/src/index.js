@@ -7,6 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { rootReducer } from "./reducers/rootReducers";
+import Editable from "./components/table/Editable";
 
 const store = createStore(rootReducer);
 
