@@ -13,28 +13,27 @@ const AllUsers = () => {
 
   const [state, setstate] = useState([]);
   const [cols, setCols] = useState([
-    { title: 'Name', field: 'name' },
-  { title: 'Email', field: 'email' }
-])
+    { title: "Name", field: "name" },
+    { title: "Email", field: "email" },
+  ]);
   const [showEdit, setShowEdit] = useState(false);
   const [selectedUser, setSelectedUser] = useState({});
   const [reload, setReload] = useState(false);
   const [show, setShow] = useState(false);
   const [msg, setMsg] = useState("");
 
-
   //================================================================show all users
   useEffect(() => {
-    async function fetchUsers(){
-    const users = await axios.get("http://localhost:5000/api/users/")
+    async function fetchUsers() {
+      const users = await axios.get("http://localhost:5000/api/users/");
       // .then((res) => {
-        console.log(users.data.data);
-        setstate(users.data.data);
+      console.log(users.data.data);
+      setstate(users.data.data);
       // })
     }
     fetchUsers();
-      // .catch((e) => console.log(e));
-  }, []);
+    // .catch((e) => console.log(e));
+  }, [reload]);
 
   //const handleClose = () => setShow(false);
 
@@ -115,10 +114,9 @@ const AllUsers = () => {
   //     })
   //     .catch((err) => console.log(err));
   // };
-console.log(state);
+  console.log(state);
   return (
-
-    <Editable rows={state} cols={cols}/>
+    <Editable rows={state} cols={cols} setReload={setReload} />
 
     // <div>
     //   <h3>all users</h3>
