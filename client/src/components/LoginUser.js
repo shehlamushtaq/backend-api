@@ -18,16 +18,18 @@ const LoginUser = () => {
     axios
       .post("http://localhost:5000/api/users/login", user)
       .then((res) => {
-        if (res.data.success) {
-          dispatch({
-            type: "DO_LOGIN",
-            payload: res.data.data,
-          });
-          history.push("/");
-        } else {
-          msgRef.current.innerHTML = res.data.msg;
-          msgRef.current.classList.remove("d-none");
-        }
+        console.log(res.data.data);
+        localStorage.setItem('userData', JSON.stringify(res.data.data))
+        // if (res.data.success) {
+        //   dispatch({
+        //     type: "DO_LOGIN",
+        //     payload: res.data.data,
+        //   });
+        //   history.push("/");
+        // } else {
+        //   msgRef.current.innerHTML = res.data.msg;
+        //   msgRef.current.classList.remove("d-none");
+        // }
       })
       .catch((err) => {
         console.log(err);

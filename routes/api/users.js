@@ -5,6 +5,10 @@ const router = express.Router();
 const User = require("../../models/users.js");
 var bcrypt = require("bcryptjs");
 const session = require("express-session");
+var jwt = require("jsonwebtoken")
+const dotenv = require("dotenv");
+dotenv.config();
+
 
 //==============================================get all users
 router.get("/", async (req, res) => {
@@ -125,23 +129,33 @@ router.post("/login", async (req, res) => {
     console.log(email);
     User.findOne({ email })
       .then((user) => {
-        bcrypt.compare(pwd, user.pwd).then((isMatch) => {
+        bcrypt.compare(pwd, user.pwd)
+        .then((isMatch) => {
           if (!isMatch) {
             console.log("Invalid Password");
             res.json({ success: false, msg: "invalid password" });
           } else {
+            jwt.sign({ id: user._id ,email:user.email }, process.env.JWT_SECRET,  function(err, token) {
             let onLineUser = {
               id: user._id,
               name: user.name,
               email: user.email,
+              token
             };
-            req.session.user = onLineUser;
-            console.log(req.session.user);
+
+
+            if(err)return res.json({status:400, msg:"no token generated"})
+            console.log(token);
             res.json({
               status: 200,
               success: true,
-              data: user,
+              data: onLineUser,
               msg: "Login successfully",
+              token
+            });
+
+
+
             });
           }
         });
